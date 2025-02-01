@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Clapperboard, Tv, Heart, Menu, X } from 'lucide-react';
+import { Home, Clapperboard, Tv, Heart, Menu, X, Search } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 
 const menuItems = [
   { icon: Home, label: 'Home', path: '/' },
+  { icon: Search, label: 'Search', path: '/search' },
   { icon: Clapperboard, label: 'Movies', path: '/movies' },
   { icon: Tv, label: 'TV Shows', path: '/tv-shows' },
   { icon: Heart, label: 'Favorites', path: '/favorites' },

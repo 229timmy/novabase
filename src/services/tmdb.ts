@@ -64,3 +64,14 @@ export const getVideos = async (mediaType: 'movie' | 'tv', id: number) => {
   const response = await tmdbApi.get(`/${mediaType}/${id}/videos`);
   return response.data.results;
 };
+
+export const searchMedia = async (query: string, page: number = 1) => {
+  const response = await tmdbApi.get('/search/multi', {
+    params: {
+      query,
+      page,
+      include_adult: false
+    }
+  });
+  return response.data;
+};

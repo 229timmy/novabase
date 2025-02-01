@@ -5,6 +5,7 @@ import { Home } from './pages/Home';
 import { Movies } from './pages/Movies';
 import { TVShows } from './pages/TVShows';
 import { Favorites } from './pages/Favorites';
+import { Search } from './pages/Search';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { SourceProvider } from './context/SourceContext';
 
@@ -19,6 +20,7 @@ function App() {
             <main className="pl-8 pr-8 pt-12">
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/search" element={<Search />} />
                 <Route path="/movies" element={<Movies />} />
                 <Route path="/tv-shows" element={<TVShows />} />
                 <Route path="/favorites" element={<Favorites />} />
