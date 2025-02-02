@@ -240,21 +240,21 @@ export const MediaModal: React.FC<MediaModalProps> = ({ item, onClose, onItemCli
                       key={episode.id}
                       className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors"
                     >
-                      <div className="flex items-start gap-4">
+                      <div className="flex flex-col sm:flex-row items-start gap-4">
                         {episode.still_path && (
                           <img
                             src={`https://image.tmdb.org/t/p/w300${episode.still_path}`}
                             alt={episode.name}
-                            className="w-48 h-27 object-cover rounded-lg"
+                            className="w-full sm:w-48 h-auto aspect-video object-cover rounded-lg"
                           />
                         )}
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between gap-4">
-                            <div>
+                        <div className="flex-1 w-full">
+                          <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                            <div className="w-full">
                               <h3 className="text-lg font-semibold mb-2">
                                 {episode.episode_number}. {episode.name}
                               </h3>
-                              <p className="text-gray-300 text-sm mb-2">
+                              <p className="text-gray-300 text-sm mb-2 line-clamp-3">
                                 {episode.overview}
                               </p>
                               <div className="flex items-center gap-4 text-sm text-gray-400">
@@ -264,7 +264,7 @@ export const MediaModal: React.FC<MediaModalProps> = ({ item, onClose, onItemCli
                             </div>
                             <button
                               onClick={() => handlePlayClick(episode.episode_number)}
-                              className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+                              className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors mt-4 sm:mt-0"
                             >
                               <Play className="w-4 h-4" />
                               Play
