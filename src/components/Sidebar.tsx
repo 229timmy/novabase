@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Home, Clapperboard, Tv, Heart, Menu, X, Search } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
+import { EasterEggModal } from './EasterEggModal';
 
 const menuItems = [
   { icon: Home, label: 'Home', path: '/' },
@@ -14,7 +15,21 @@ const menuItems = [
 
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
   const location = useLocation();
+
+  const handleLogoClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setClickCount(prev => {
+      const newCount = prev + 1;
+      if (newCount === 7) {
+        setShowEasterEgg(true);
+        return 0;
+      }
+      return newCount;
+    });
+  }, []);
 
   return (
     <>
@@ -45,7 +60,11 @@ export const Sidebar = () => {
       >
         <div className="flex flex-col h-full">
           <div className="p-6">
-            <Link to="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/" 
+              className="flex items-center gap-2 cursor-pointer" 
+              onClick={handleLogoClick}
+            >
               <img src="/logo.png" alt="Nova" className="w-8 h-8" />
               <span className="text-white text-xl font-bold">Nova</span>
             </Link>
@@ -82,6 +101,12 @@ export const Sidebar = () => {
           onClick={() => setIsOpen(false)}
         />
       )}
+
+      {/* Easter Egg Modal */}
+      <EasterEggModal 
+        isOpen={showEasterEgg} 
+        onClose={() => setShowEasterEgg(false)} 
+      />
     </>
   );
 };

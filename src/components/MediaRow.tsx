@@ -25,8 +25,17 @@ export const MediaRow: React.FC<MediaRowProps> = ({ title, items, onItemClick })
     }
   };
 
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="relative py-4">
+    <motion.div 
+      className="relative py-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <h2 className="text-2xl font-bold mb-4 text-white">{title}</h2>
       
       <div className="relative group">
@@ -57,6 +66,6 @@ export const MediaRow: React.FC<MediaRowProps> = ({ title, items, onItemClick })
           <ChevronRight className="w-6 h-6 text-white" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
