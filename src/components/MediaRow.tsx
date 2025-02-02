@@ -31,7 +31,7 @@ export const MediaRow: React.FC<MediaRowProps> = ({ title, items, onItemClick })
 
   return (
     <motion.div 
-      className="relative py-4"
+      className="relative py-8"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -41,11 +41,12 @@ export const MediaRow: React.FC<MediaRowProps> = ({ title, items, onItemClick })
       <div className="relative group">
         <motion.div
           ref={rowRef}
-          className="flex gap-4 overflow-x-auto scroll-smooth"
+          className="flex gap-4 overflow-x-auto overflow-y-visible scroll-smooth px-12 pt-16 pb-20"
           style={{
-            overflowY: 'visible',
-            paddingBottom: '1rem',
-            marginBottom: '-1rem'
+            marginLeft: '-3rem',
+            marginRight: '-3rem',
+            marginTop: '-3rem',
+            marginBottom: '-4rem'
           }}
         >
           {items.map((item) => (
@@ -55,13 +56,13 @@ export const MediaRow: React.FC<MediaRowProps> = ({ title, items, onItemClick })
 
         <button
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute left-8 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-10"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
         </button>
         <button
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute right-8 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-10"
         >
           <ChevronRight className="w-6 h-6 text-white" />
         </button>

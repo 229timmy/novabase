@@ -4,6 +4,7 @@ import { Home, Clapperboard, Tv, Heart, Menu, X, Search } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { EasterEggModal } from './EasterEggModal';
+import '../styles/navbar-animation.css';
 
 const menuItems = [
   { icon: Home, label: 'Home', path: '/' },
@@ -80,13 +81,13 @@ export const Sidebar = () => {
                 <motion.div
                   whileHover={{ x: 10 }}
                   className={clsx(
-                    "flex items-center gap-4 w-full p-4 text-white/80 hover:text-white",
-                    "transition-colors duration-200 rounded-lg hover:bg-white/10",
+                    "nav-link flex items-center gap-4 w-full p-4 text-white/80 hover:text-white",
+                    "transition-colors duration-200 rounded-lg hover:bg-white/5",
                     location.pathname === item.path && "bg-white/10 text-white"
                   )}
                 >
-                  <item.icon className="w-6 h-6" />
-                  <span className="text-lg">{item.label}</span>
+                  <item.icon className="w-6 h-6 relative z-[1]" />
+                  <span className="text-lg relative z-[1]">{item.label}</span>
                 </motion.div>
               </Link>
             ))}

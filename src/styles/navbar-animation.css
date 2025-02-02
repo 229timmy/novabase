@@ -1,0 +1,69 @@
+@property --rotate {
+  syntax: "<angle>";
+  initial-value: 132deg;
+  inherits: false;
+}
+
+.nav-link {
+  position: relative;
+  border-radius: 0.5rem;
+  transition: all 0.5s ease;
+  isolation: isolate;
+}
+
+.nav-link::before {
+  content: "";
+  width: 104%;
+  height: 102%;
+  border-radius: 0.5rem;
+  background-image: linear-gradient(
+    var(--rotate), 
+    #5ddcff, 
+    #3c67e3 43%, 
+    #4e00c2
+  );
+  position: absolute;
+  z-index: -1;
+  top: -1%;
+  left: -2%;
+  opacity: 0;
+  transition: opacity 0.5s;
+  animation: spin 2.5s linear infinite;
+}
+
+.nav-link::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  transform: scale(0.8);
+  filter: blur(1.5rem);
+  background-image: linear-gradient(
+    var(--rotate), 
+    #5ddcff, 
+    #3c67e3 43%, 
+    #4e00c2
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+  animation: spin 2.5s linear infinite;
+}
+
+.nav-link:hover::before,
+.nav-link:hover::after {
+  opacity: 1;
+}
+
+@keyframes spin {
+  0% {
+    --rotate: 0deg;
+  }
+  100% {
+    --rotate: 360deg;
+  }
+} 
