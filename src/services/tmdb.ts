@@ -75,3 +75,19 @@ export const searchMedia = async (query: string, page: number = 1) => {
   });
   return response.data;
 };
+
+export const getGenres = async (mediaType: 'movie' | 'tv') => {
+  const response = await tmdbApi.get(`/genre/${mediaType}/list`);
+  return response.data.genres;
+};
+
+export const getByGenre = async (mediaType: 'movie' | 'tv', genreId: number, page: number = 1) => {
+  const response = await tmdbApi.get(`/discover/${mediaType}`, {
+    params: {
+      with_genres: genreId,
+      page,
+      sort_by: 'popularity.desc'
+    }
+  });
+  return response.data;
+};

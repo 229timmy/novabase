@@ -6,6 +6,7 @@ import { Movies } from './pages/Movies';
 import { TVShows } from './pages/TVShows';
 import { Favorites } from './pages/Favorites';
 import { Search } from './pages/Search';
+import { Categories } from './pages/Categories';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { SourceProvider } from './context/SourceContext';
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/movies" element={<Movies />} />
                 <Route path="/tv-shows" element={<TVShows />} />
                 <Route path="/favorites" element={<Favorites />} />
+                <Route path="/categories" element={<Categories />} />
               </Routes>
             </main>
           </div>
