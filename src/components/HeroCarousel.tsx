@@ -16,35 +16,22 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({ items, onItemClick }
     const timer = setInterval(() => {
       setDirection(1);
       setCurrentIndex((prev) => (prev + 1) % items.length);
-    }, 8000);
+    }, 20000);
 
     return () => clearInterval(timer);
   }, [items.length]);
 
-  const handleNext = () => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % items.length);
-  };
-
-  const handlePrev = () => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
-  };
-
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
+      x: direction > 0 ? 1000 : -1000
     }),
     center: {
       zIndex: 1,
-      x: 0,
-      opacity: 1
+      x: 0
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
+      x: direction < 0 ? 1000 : -1000
     })
   };
 
@@ -59,8 +46,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({ items, onItemClick }
           animate="center"
           exit="exit"
           transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 }
+            x: { type: "spring", stiffness: 50, damping: 20, duration: 2 }
           }}
           className="absolute inset-0"
         >
@@ -72,9 +58,9 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({ items, onItemClick }
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
             <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
               className="absolute bottom-0 left-0 p-8 text-white"
             >
               <h2 className="text-4xl font-bold mb-4">
@@ -96,7 +82,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({ items, onItemClick }
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2">
+      <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2 z-10">
         {items.map((_, index) => (
           <button
             key={index}
@@ -112,19 +98,6 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({ items, onItemClick }
           />
         ))}
       </div>
-
-      <button
-        onClick={handlePrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full backdrop-blur-sm hover:bg-black/75 transition-colors"
-      >
-        <ChevronLeft className="w-6 h-6 text-white" />
-      </button>
-      <button
-        onClick={handleNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full backdrop-blur-sm hover:bg-black/75 transition-colors"
-      >
-        <ChevronRight className="w-6 h-6 text-white" />
-      </button>
     </div>
   );
 };
