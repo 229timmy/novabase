@@ -128,15 +128,20 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const updateProfile = async (data: { username?: string; avatar_url?: string }) => {
     if (!user) throw new Error('No user logged in');
 
-    const { error } = await supabase
-      .from('profiles')
-      .update(data)
-      .eq('id', user.id);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update(data)
+        .eq('id', user.id);
 
-    if (error) throw error;
-    
-    if (data.avatar_url) {
-      setAvatarUrl(data.avatar_url);
+      if (error) throw error;
+      
+      if (data.avatar_url) {
+        setAvatarUrl(data.avatar_url);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
     }
   };
 

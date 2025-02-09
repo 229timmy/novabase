@@ -26,14 +26,39 @@ export const Profile = () => {
       setLoading(true);
       setError('');
       
+      // Check if bucket exists, if not create it
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const avatarsBucket = buckets?.find(b => b.name === 'avatars');
+      
+      if (!avatarsBucket) {
+        const { error: createError } = await supabase.storage.createBucket('avatars', {
+          public: true,
+          fileSizeLimit: 1024 * 1024 * 2 // 2MB
+        });
+        if (createError) throw createError;
+      }
+
       // Upload file to Supabase Storage
       const fileExt = file.name.split('.').pop();
       const fileName = `${user?.id}-${Math.random()}.${fileExt}`;
-      const filePath = `avatars/${fileName}`;
+      const filePath = `${fileName}`;
+
+      // First, try to delete any existing avatar
+      if (avatarUrl && !avatarUrl.includes('ui-avatars.com')) {
+        const oldFileName = avatarUrl.split('/').pop();
+        if (oldFileName) {
+          await supabase.storage
+            .from('avatars')
+            .remove([oldFileName]);
+        }
+      }
 
       const { error: uploadError, data } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file, { upsert: true });
+        .upload(filePath, file, { 
+          upsert: true,
+          contentType: file.type
+        });
 
       if (uploadError) throw uploadError;
 
@@ -47,6 +72,7 @@ export const Profile = () => {
       setAvatarUrl(publicUrl);
       
     } catch (err) {
+      console.error('Avatar upload error:', err);
       setError(err instanceof Error ? err.message : 'Error updating avatar');
     } finally {
       setLoading(false);
