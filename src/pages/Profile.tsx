@@ -26,18 +26,6 @@ export const Profile = () => {
       setLoading(true);
       setError('');
       
-      // Check if bucket exists, if not create it
-      const { data: buckets } = await supabase.storage.listBuckets();
-      const avatarsBucket = buckets?.find(b => b.name === 'avatars');
-      
-      if (!avatarsBucket) {
-        const { error: createError } = await supabase.storage.createBucket('avatars', {
-          public: true,
-          fileSizeLimit: 1024 * 1024 * 2 // 2MB
-        });
-        if (createError) throw createError;
-      }
-
       // Upload file to Supabase Storage
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}.${fileExt}`;
