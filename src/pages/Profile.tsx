@@ -40,16 +40,21 @@ export const Profile = () => {
 
       // Upload file to Supabase Storage
       const fileExt = file.name.split('.').pop();
-      const fileName = `${user?.id}-${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${user?.id}/${fileName}`;
 
       // First, try to delete any existing avatar
       if (avatarUrl && !avatarUrl.includes('ui-avatars.com')) {
-        const oldFileName = avatarUrl.split('/').pop();
-        if (oldFileName) {
-          await supabase.storage
-            .from('avatars')
-            .remove([oldFileName]);
+        try {
+          const oldFilePath = avatarUrl.split('avatars/')[1];
+          if (oldFilePath) {
+            await supabase.storage
+              .from('avatars')
+              .remove([oldFilePath]);
+          }
+        } catch (error) {
+          console.error('Error removing old avatar:', error);
+          // Continue with upload even if delete fails
         }
       }
 
