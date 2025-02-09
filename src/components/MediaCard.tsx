@@ -26,14 +26,14 @@ export const MediaCard: React.FC<MediaCardProps> = ({ item, onClick }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="relative flex-shrink-0 w-full cursor-pointer group hover:z-10 animated-card"
+      className="relative flex-shrink-0 w-32 sm:w-40 md:w-48 cursor-pointer group hover:z-10 animated-card"
       onClick={() => onClick(item)}
       style={{ transformOrigin: 'center center' }}
     >
       <img
         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
         alt={item.title || item.name}
-        className="w-full aspect-[2/3] object-cover rounded-lg relative z-[1]"
+        className="w-full h-48 sm:h-60 md:h-72 object-cover rounded-lg relative z-[1]"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent rounded-lg z-[2]" />
       <div className="absolute bottom-0 left-0 p-4 text-white z-[2]">
