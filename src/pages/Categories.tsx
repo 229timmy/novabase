@@ -100,7 +100,7 @@ export const Categories = () => {
       </div>
 
       {!selectedGenre && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {genres.map((genre) => (
             <motion.div
               key={genre.id}
@@ -132,7 +132,7 @@ export const Categories = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {results.map((item) => (
               <MediaCard
                 key={item.id}
