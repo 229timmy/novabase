@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { User, Lock, Bell, Upload, AlertCircle } from 'lucide-react';
 import clsx from 'clsx';
 import { useSupabase } from '../context/SupabaseContext';
+import { supabase } from '../lib/supabase';
 
 export const Profile = () => {
   const { user, updateProfile } = useSupabase();
@@ -25,14 +26,26 @@ export const Profile = () => {
       setLoading(true);
       setError('');
       
-      // Simulate file upload delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Upload file to Supabase Storage
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user?.id}-${Math.random()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      const { error: uploadError, data } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      // Update profile with new avatar URL
+      await updateProfile({ avatar_url: publicUrl });
+      setAvatarUrl(publicUrl);
       
-      // Create a local URL for the uploaded file
-      const localUrl = URL.createObjectURL(file);
-      setAvatarUrl(localUrl);
-      
-      await updateProfile({ avatar_url: localUrl });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error updating avatar');
     } finally {

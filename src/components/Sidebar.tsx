@@ -22,7 +22,9 @@ export const Sidebar = () => {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, signOut } = useSupabase();
+  const { user, signOut, avatarUrl } = useSupabase();
+
+  const defaultAvatarUrl = `https://ui-avatars.com/api/?name=${user?.email || 'User'}&background=random&color=fff&bold=true&size=128`;
 
   const handleLogoClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -122,7 +124,7 @@ export const Sidebar = () => {
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden bg-white/10">
                   <img
-                    src={`https://ui-avatars.com/api/?name=${user?.email || 'User'}&background=random&color=fff&bold=true&size=128`}
+                    src={avatarUrl || defaultAvatarUrl}
                     alt={user?.email || 'User'}
                     className="w-full h-full object-cover"
                   />
