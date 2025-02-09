@@ -27,11 +27,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode }) =
     try {
       if (mode === 'signin') {
         await signIn(email, password);
+        // Wait for the session to be established
+        await new Promise(resolve => setTimeout(resolve, 1000));
       } else {
         await signUp(email, password, username);
       }
-      navigate('/home');
       onClose();
+      navigate('/home');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

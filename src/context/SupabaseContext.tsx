@@ -13,6 +13,7 @@ interface SupabaseContextType {
   addToFavorites: (movieId: number) => Promise<void>;
   removeFromFavorites: (movieId: number) => Promise<void>;
   isFavorite: (movieId: number) => boolean;
+  avatarUrl: string | null;
 }
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
@@ -29,6 +30,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   // Fetch favorites when user changes
   useEffect(() => {
@@ -52,15 +54,36 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     // Check active sessions and subscribe to auth changes
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const initializeAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
+      if (session?.user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', session.user.id)
+          .single();
+        setAvatarUrl(data?.avatar_url ?? null);
+      }
       setLoading(false);
-    });
+    };
+
+    initializeAuth();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', session.user.id)
+          .single();
+        setAvatarUrl(data?.avatar_url ?? null);
+      } else {
+        setAvatarUrl(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -111,6 +134,10 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       .eq('id', user.id);
 
     if (error) throw error;
+    
+    if (data.avatar_url) {
+      setAvatarUrl(data.avatar_url);
+    }
   };
 
   const addToFavorites = async (movieId: number) => {
@@ -159,6 +186,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         addToFavorites,
         removeFromFavorites,
         isFavorite,
+        avatarUrl,
       }}
     >
       {children}
