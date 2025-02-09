@@ -1,6 +1,6 @@
-@property --rotate {
+@property --angle {
   syntax: "<angle>";
-  initial-value: 132deg;
+  initial-value: 0deg;
   inherits: false;
 }
 
@@ -17,7 +17,7 @@
   height: 102%;
   border-radius: 0.5rem;
   background-image: linear-gradient(
-    var(--rotate), 
+    var(--angle), 
     #5ddcff, 
     #3c67e3 43%, 
     #4e00c2
@@ -28,7 +28,6 @@
   left: -2%;
   opacity: 0;
   transition: opacity 0.5s;
-  animation: spin 2.5s linear infinite;
 }
 
 .nav-link::after {
@@ -44,26 +43,16 @@
   transform: scale(0.8);
   filter: blur(1.5rem);
   background-image: linear-gradient(
-    var(--rotate), 
+    var(--angle), 
     #5ddcff, 
     #3c67e3 43%, 
     #4e00c2
   );
   opacity: 0;
   transition: opacity 0.5s;
-  animation: spin 2.5s linear infinite;
 }
 
 .nav-link:hover::before,
 .nav-link:hover::after {
   opacity: 1;
-}
-
-@keyframes spin {
-  0% {
-    --rotate: 0deg;
-  }
-  100% {
-    --rotate: 360deg;
-  }
 } 
