@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Clapperboard, Tv, Heart, Menu, X, Search, Grid } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Home, Clapperboard, Tv, Heart, Menu, X, Search, Grid, LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { EasterEggModal } from './EasterEggModal';
+import { useSupabase } from '../context/SupabaseContext';
 import '../styles/navbar-animation.css';
 
 const menuItems = [
-  { icon: Home, label: 'Home', path: '/' },
+  { icon: Home, label: 'Home', path: '/home' },
   { icon: Search, label: 'Search', path: '/search' },
   { icon: Grid, label: 'Categories', path: '/categories' },
   { icon: Clapperboard, label: 'Movies', path: '/movies' },
@@ -20,6 +21,8 @@ export const Sidebar = () => {
   const [clickCount, setClickCount] = useState(0);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useSupabase();
 
   const handleLogoClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -33,13 +36,22 @@ export const Sidebar = () => {
     });
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
     <>
       {/* Fixed Menu Button */}
       <motion.button
         initial={false}
         animate={{ 
-          x: isOpen ? 256 - 48 : 0, // 256px (sidebar width) - 48px (button position)
+          x: isOpen ? 256 - 48 : 0,
           rotate: isOpen ? 180 : 0 
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -92,6 +104,42 @@ export const Sidebar = () => {
                 </motion.div>
               </Link>
             ))}
+          </div>
+
+          {/* Profile and Logout Section */}
+          <div className="px-4 py-6 border-t border-white/10">
+            <Link
+              to="/profile"
+              onClick={() => setIsOpen(false)}
+            >
+              <motion.div
+                whileHover={{ x: 10 }}
+                className={clsx(
+                  "flex items-center gap-4 w-full p-4 text-white/80 hover:text-white mb-2",
+                  "transition-colors duration-200 rounded-lg hover:bg-white/5",
+                  location.pathname === '/profile' && "bg-white/10 text-white"
+                )}
+              >
+                <div className="w-8 h-8 rounded-full overflow-hidden bg-white/10">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${user?.email || 'User'}&background=random&color=fff&bold=true&size=128`}
+                    alt={user?.email || 'User'}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-lg">{user?.email?.split('@')[0] || 'User'}</span>
+              </motion.div>
+            </Link>
+
+            <motion.button
+              whileHover={{ x: 10 }}
+              onClick={handleLogout}
+              className="flex items-center gap-4 w-full p-4 text-white/80 hover:text-white
+                transition-colors duration-200 rounded-lg hover:bg-white/5"
+            >
+              <LogOut className="w-6 h-6" />
+              <span className="text-lg">Logout</span>
+            </motion.button>
           </div>
         </div>
       </motion.div>
